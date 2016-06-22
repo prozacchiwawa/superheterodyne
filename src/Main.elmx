@@ -1,0 +1,16 @@
+module Main exposing (..)
+
+import Arty
+import Html.App exposing (programWithFlags)
+import RouteUrl
+
+main : Program Never
+main =
+    RouteUrl.program
+        { delta2url = Arty.delta2hash
+        , location2messages = Arty.hash2messages
+        , init = Arty.init
+        , update = Arty.update
+        , view = Arty.view
+        , subscriptions = \_ -> Sub.none
+        }
