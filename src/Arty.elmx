@@ -43,7 +43,7 @@ feedEntryDecoder =
     JD.object3 FeedEntry
         ("title" := JD.string)
         ("link" := JD.string)
-        ("published" := JD.string)
+        ("date" := JD.string)
 
 init flags =
     let model =

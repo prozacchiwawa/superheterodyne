@@ -2,6 +2,7 @@ elm-stuff
 node_modules
 *~
 src/*.elm
-js
+js/index.js
+js/server.js
 tmp
 medium-feed

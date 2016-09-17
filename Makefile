@@ -15,4 +15,4 @@ tmp/server.js: src/Arty.elm src/Server.elm
 	elm make --output $@ $^
 
 js/server.js: tmp/server.js
-	sed -e 's/_eeue56$$elm_server_side_renderer/_prozacchiwawa$$greatpodcasts/g' < tmp/server.js > $@
+	sed -e 's/_eeue56$$elm_server_side_renderer/_prozacchiwawa$$superheterodyne/g' -e 's/'\''use strict'\'';/'\''use strict'\'';var document, window;/g' < tmp/server.js > $@
