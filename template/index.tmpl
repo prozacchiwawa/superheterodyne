@@ -15,7 +15,7 @@
         var takeoverFunction = function() {
             parent.removeEventListener('DOMSubtreeModified', takeoverFunction);
             parent.removeChild(div);
-        }           
+        }
         parent.addEventListener('DOMSubtreeModified', takeoverFunction);
         var children = [].slice(div.childNodes);
         Elm.Main.embed(parent, {{{feed}}});
