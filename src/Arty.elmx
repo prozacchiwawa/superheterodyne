@@ -1,5 +1,6 @@
 module Arty exposing (..)
 
+import Debug exposing (log)
 import EffModel as EF exposing (wrap, unwrap)
 import Html
 import Html.Attributes
@@ -44,18 +45,21 @@ feedEntryDecoder =
         ("link" := JD.string)
         ("published" := JD.string)
 
-init =
+init flags =
     let model =
         { viewing = Home
-        , mediumEntries = []
+        , mediumEntries = flags
         }
     in
     (model,
-        Http.get feedDecoder "medium-feed" |> Task.perform HttpError GotMedium
+         if model.mediumEntries == [] then
+             Http.get feedDecoder "medium-feed" |> Task.perform HttpError GotMedium
+         else
+             Cmd.none
     )
 
 effModelUpdate action effmodel =
-    case action of
+    case log "action" action of
         Switch v ->
             effmodel
                 |> EF.map (\m -> { m | viewing = v })
@@ -72,16 +76,31 @@ update action model =
 
 view model =
     let viewHtml =
-        case model.viewing of
-            Home ->
-                <div>
+        let writing =
+            List.map 
+                (\e ->
+                     <a href={e.link}>
+                         <h3><div class='pencil'></div> {=e.title}</h3>
+                         <div class='post-date'>{=e.published}</div>
+                     </a>
+                ) model.mediumEntries
+        in
+        let offset =
+            case model.viewing of
+                Home -> "0"
+                Code -> "-100vw"
+                Writing -> "-200vw"
+        in
+        <div class="spa-container" style={("left: " ++ offset)}>
+                <div class="home-body">
                     <h1>Home</h1>
                     <p>
                         An old C++ programmer, a new functional programmer.  A
                         curmudgeon recently tiring of cynicism.
                     </p>
+                    <h2 style="margin-top: 2vmin;">Writing</h2>
+                    {:writing}
                 </div>
-            Code ->
                 <div class='code-body'>
                     <h1>Code</h1>
                     <div class='github-link'><a href='https://github.com/prozacchiwawa'><div class='github'></div><div class='code-title'>My Github Page</div></a></div>
@@ -128,22 +147,14 @@ view model =
                         OCaml.
                     </p>
                 </div>
-            Writing ->
-                let writing =
-                    List.map (\e ->
-                            <a href={e.link}>
-                                <h3><div class='pencil'></div> {=e.title}</h3>
-                                <div class='post-date'>{=e.published}</div>
-                            </a>
-                        ) model.mediumEntries
-                in
-                <div>
+                <div class='writing-body'>
                     <h1>Writing</h1>
                     <div class='writing-container'>
                         <h2>Medium</h2>
                         {:writing}
                     </div>
                 </div>
+            </div>
     in
     let navLi =
         List.map (\t ->
@@ -176,7 +187,7 @@ view model =
 delta2builder : Model -> Model -> Maybe Builder
 delta2builder previous current =
     builder
-        |> replacePath [toString current] |> Just
+        |> replacePath [toString current.viewing] |> Just
 
 -- This is an example of the new API, if using the whole URL
 delta2url : Model -> Model -> Maybe UrlChange

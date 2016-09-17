@@ -1,0 +1,56 @@
+port module Server exposing (..)
+
+import Html.App exposing (programWithFlags)
+import Html exposing (Html)
+import HtmlToString exposing (htmlToString)
+import Task
+
+import Arty
+
+type Msg
+    = NoOp
+    | AppMsg Arty.Action
+    | RenderToHtml
+
+type alias Model =
+    { app : Arty.Model
+    , view : Html Arty.Action
+    }
+
+init : (List Arty.FeedEntry) -> (Model, Cmd Msg)
+init flags =
+    let (app,eff) = Arty.init flags in
+    let model =
+            { app = app, view = Arty.view app } in
+    model ! [ Cmd.map AppMsg eff, Task.perform (always RenderToHtml) (always RenderToHtml) (Task.succeed ()) ]
+
+update : Msg -> Model -> (Model, Cmd Msg)
+update action model =
+    case action of
+      AppMsg msg ->
+          let (app,eff) = Arty.update msg model.app in
+          { app = app
+          , view = Arty.view app } ! [ Cmd.map AppMsg eff ]
+      RenderToHtml ->
+          model ! [ model.view |> htmlToString |> htmlResult ]
+      _ -> model ! []
+
+view : Model -> Html Arty.Action
+
+view model =
+    model.view
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
+
+main : Program (List Arty.FeedEntry)
+main =
+    programWithFlags
+        { init = init
+        , update = update
+        , view = \m -> Html.App.map AppMsg (view m)
+        , subscriptions = subscriptions
+        }
+
+port htmlResult : String -> Cmd msg

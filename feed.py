@@ -3,7 +3,7 @@ import requests_cache
 import json
 import feedparser
 
-requests_cache.install_cache('arty-medium-feed')
+# requests_cache.install_cache('arty-medium-feed')
 
 result = requests.get('https://medium.com/feed/@prozacchiwawa')
 feeddata = feedparser.parse(result.text)

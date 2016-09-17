@@ -1,12 +1,13 @@
 module Main exposing (..)
 
 import Arty
-import Html.App exposing (programWithFlags)
+import Html.App
+import Html
 import RouteUrl
 
-main : Program Never
+main : Program (List Arty.FeedEntry)
 main =
-    RouteUrl.program
+    RouteUrl.programWithFlags
         { delta2url = Arty.delta2hash
         , location2messages = Arty.hash2messages
         , init = Arty.init

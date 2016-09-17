@@ -4,8 +4,10 @@
     "repository": "https://github.com/user/project.git",
     "license": "BSD3",
     "source-directories": [
-        "src"
+        "src",
+        "elm-server-side-renderer/src"
     ],
+    "native-modules": true,
     "exposed-modules": [],
     "dependencies": {
         "elm-lang/core": "4.0.1 <= v < 5.0.0",
@@ -16,5 +18,5 @@
         "prozacchiwawa/effmodel": "2.0.0 <= v < 3.0.0",
         "rgrempel/elm-route-url": "2.0.1 <= v < 3.0.0"
     },
-    "elm-version": "0.16.0 <= v < 0.17.0"
+    "elm-version": "0.17.0 <= v < 0.18.0"
 }

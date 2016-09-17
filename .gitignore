@@ -1,4 +1,7 @@
 elm-stuff
 node_modules
 *~
-src/Main.elm
+src/*.elm
+js
+tmp
+medium-feed
