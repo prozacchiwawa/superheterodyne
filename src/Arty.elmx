@@ -165,6 +165,7 @@ view model =
         <div class='nav'>
             <ul>
                 {:navLi}
+                <li class='this'><a href="https://github.com/prozacchiwawa/superheterodyne">This Website</a></li>
             </ul>
         </div>
         <div class='heading'>
