@@ -114,6 +114,7 @@ var app = express();
 app.get('/', handleIndex);
 app.get('/index.html', handleIndex);
 app.get('/medium-feed', handleMedium);
+app.get('/.well-known', express.static('.well-known'));
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/img', express.static('img'));
