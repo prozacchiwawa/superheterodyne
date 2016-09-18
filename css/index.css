@@ -1,6 +1,7 @@
 body, html {
     font-size: 3vmin;
     background-color: #dcb;
+    overflow: hidden;
 }
 
 a:active {

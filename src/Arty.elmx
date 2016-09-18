@@ -3,7 +3,7 @@ module Arty exposing (..)
 import Debug exposing (log)
 import EffModel as EF exposing (wrap, unwrap)
 import Html
-import Html.Attributes
+import Html.Attributes exposing (style)
 import Http
 import Json.Decode as JD exposing ((:=))
 import RouteHash exposing (HashUpdate)
@@ -91,7 +91,7 @@ view model =
                 Code -> "-100vw"
                 Writing -> "-200vw"
         in
-        <div class="spa-container" style={("left: " ++ offset)}>
+        <div class="spa-container" {style [("left", offset)]}>
                 <div class="home-body">
                     <h1>Home</h1>
                     <p>
