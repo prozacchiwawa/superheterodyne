@@ -108,15 +108,20 @@ function handleMedium(request, response) {
     }).done();
 }
 
+function handleKeybase(request, response) {
+    return qio.read('keybase.txt','r').then(function(t) { response.end(t); }).done();
+}
+
 const PORT = 8001;
 var app = express();
 
 app.get('/', handleIndex);
 app.get('/index.html', handleIndex);
 app.get('/medium-feed', handleMedium);
-app.get('/.well-known', express.static('.well-known'));
+app.get('/keybase.txt', handleKeybase);
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/img', express.static('img'));
+app.use('/files', express.static('files'));
 app.use("/GitHub-Mark", express.static('GitHub-Mark'));
 app.listen(PORT);
