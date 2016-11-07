@@ -1,4 +1,5 @@
 var express = require('express');
+var cors = require('cors');
 var elm = require('./server.js');
 var q = require('q');
 var qio = require('q-io/fs');
@@ -108,17 +109,16 @@ function handleMedium(request, response) {
     }).done();
 }
 
-function handleKeybase(request, response) {
-    return qio.read('keybase.txt','r').then(function(t) { response.end(t); }).done();
-}
-
 const PORT = 8001;
 var app = express();
 
+app.use(cors());
+app.options('*', cors());
 app.get('/', handleIndex);
 app.get('/index.html', handleIndex);
 app.get('/medium-feed', handleMedium);
-app.get('/keybase.txt', handleKeybase);
+app.get('/keybase.txt', express.static('.'));
+app.get(/google.*\.html/, express.static('.'));
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/img', express.static('img'));
