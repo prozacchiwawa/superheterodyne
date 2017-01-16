@@ -137,6 +137,7 @@ a:link {
     flex-direction: row;
     font-size: 1.1rem;
     font-weight: 550;
+    margin-top: 0.5rem;
 }
 
 .body a {
@@ -215,6 +216,8 @@ a:link {
     width: 100vw;
     height: 100%;
     overflow-y: auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 .code-body {
