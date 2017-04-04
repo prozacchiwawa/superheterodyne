@@ -1,11 +1,9 @@
 module Main exposing (..)
 
 import Arty
-import Html.App
 import Html
 import RouteUrl
 
-main : Program (List Arty.FeedEntry)
 main =
     RouteUrl.programWithFlags
         { delta2url = Arty.delta2hash

@@ -2,11 +2,10 @@ module Arty exposing (..)
 
 import Debug exposing (log)
 import EffModel as EF exposing (wrap, unwrap)
-import Html
+import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Http
-import Json.Decode as JD exposing ((:=))
-import RouteHash exposing (HashUpdate)
+import Json.Decode as JD
 import RouteUrl exposing (UrlChange)
 import RouteUrl.Builder as Builder exposing (Builder, builder, replacePath)
 import Navigation exposing (Location)
@@ -36,11 +35,16 @@ type Action
     | HttpError Http.Error
     | GotMedium Feed
 
-feedDecoder =
-    (JD.at ["entries"] (JD.list feedEntryDecoder) `JD.andThen` (\entries -> JD.succeed { entries = entries }))
+(:=) : String -> JD.Decoder a -> JD.Decoder a
+(:=) = JD.field
 
+feedDecoder : JD.Decoder Feed
+feedDecoder =
+    (JD.at ["entries"] (JD.list feedEntryDecoder) |> JD.andThen (\entries -> JD.succeed { entries = entries }))
+
+feedEntryDecoder : JD.Decoder FeedEntry
 feedEntryDecoder =
-    JD.object3 FeedEntry
+    JD.map3 FeedEntry
         ("title" := JD.string)
         ("link" := JD.string)
         ("date" := JD.string)
@@ -53,11 +57,15 @@ init flags =
     in
     (model,
          if model.mediumEntries == [] then
-             Http.get feedDecoder "medium-feed" |> Task.perform HttpError GotMedium
+             Http.get "medium-feed" feedDecoder |> Http.toTask
+             |> Task.map GotMedium
+             |> Task.onError (\e -> Task.succeed (HttpError e))
+             |> Task.perform identity
          else
              Cmd.none
     )
 
+effModelUpdate : Action -> EF.EffModel Model Action -> EF.EffModel Model Action
 effModelUpdate action effmodel =
     case log "action" action of
         Switch v ->
@@ -68,16 +76,18 @@ effModelUpdate action effmodel =
                 |> EF.map (\m -> { m | mediumEntries = feed.entries })
         _ -> effmodel
 
+update : Action -> Model -> (Model, Cmd Action)
 update action model =
     model
         |> wrap
         |> effModelUpdate action
         |> unwrap
 
+view : Model -> Html Action
 view model =
     let viewHtml =
         let writing =
-            List.map 
+            List.map
                 (\e ->
                      <a href={e.link}>
                          <h3><div class='pencil'></div> {=e.title}</h3>
@@ -94,57 +104,36 @@ view model =
         <div class="spa-container" {style [("left", offset)]}>
                 <div class="home-body">
                     <h1>Home</h1>
-                    <p>
-                        An old C++ programmer, a new functional programmer.  A
-                        curmudgeon recently tiring of cynicism.
-                    </p>
+                    <p>An old C++ programmer, a new functional programmer.  A curmudgeon recently tiring of cynicism.</p>
                     <h2 style="margin-top: 2vmin;">Writing</h2>
                     {:writing}
                 </div>
                 <div class='code-body'>
                     <h1>Code</h1>
                     <div class='github-link'><a href='https://github.com/prozacchiwawa'><div class='github'></div><div class='code-title'>My Github Page</div></a></div>
-                    <p>
-                        I'm what might be called a habitual coder.  I'm somewhat
-                        prolific, and I tend to write an eclectic mix of stuff
-                        depending on my interests at the time.
-                    </p>
+                    <p>I'm what might be called a habitual coder.  I'm somewhat prolific, and I tend to write an eclectic mix of stuff depending on my interests at the time.</p>
                     <h2 class='code-h2'>Some highlights</h2>
-                    <p>
-                        I've been recently working in elm, and getting into the
-                        groove of more formal functional programming languages.
-                    </p>
+                    <p>I've been recently working in elm, and getting into the groove of more formal functional programming languages.</p>
                     <p>
                         <div class='github-link'><a href='https://github.com/prozacchiwawa/elm-react-native-experiment'><div class='github'></div><div class='code-title'>elm-react-native-experiment</div></a></div>
                         <div class='project-date'>June 19, 2016</div>
-                        An experiment with elm-native-ui to port to 0.17 and
-                        remove the need for native js in the module.  It turned
-                        out well.
+                        <span>An experiment with elm-native-ui to port to 0.17 and remove the need for native js in the module.  It turned out well.</span>
                     </p>
                     <p>
                         <div class='github-link'><a href='https://github.com/prozacchiwawa/clang-tooling-style'><div class='github'></div><div class='code-title'>clang-tooling-style</div></a>
                         <div class='project-date'>May 26, 2015</div>
-                        <p>
-                            In another life I wrote a lot of C++ and refactored large
-                            unruly code.  I came up with this:
-                        </p>
-                        <p>
-                            A style enforcer for a very disciplined flavor of C++
-                            requiring the use of interfaces and dependency injection.
-                        </p>
+                        <p> In another life I wrote a lot of C++ and refactored large unruly code.  I came up with this:</p>
+                        <p>A style enforcer for a very disciplined flavor of C++ requiring the use of interfaces and dependency injection.</p>
                     </p>
                     <p>
                         <div class='github-link'><a href='http://www.reactos.org/'><div class='code-title'>ReactOS</div></a></div>
                         <div class='project-date'>2004-2010</div>
-                        Back in the day, I wrote a lot of code in ReactOS, including
-                        most of the code in afd.sys and tcpip.sys.
+                        <span>Back in the day, I wrote a lot of code in ReactOS, including most of the code in afd.sys and tcpip.sys.</span>
                     </p>
                     <p>
                         <div class='github-link'><a href='http://swig.org/'><div class='code-title'>SWIG</div></a></div>
                         <div class='project-date'>2003</div>
-                        In the prehistory of our century, I was interested in
-                        language interoperability and wrote a SWIG module for
-                        OCaml.
+                        <span>In the prehistory of our century, I was interested in language interoperability and wrote a SWIG module for OCaml.</span>
                     </p>
                 </div>
                 <div class='writing-body'>

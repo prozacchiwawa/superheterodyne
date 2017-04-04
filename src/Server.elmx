@@ -1,6 +1,6 @@
 port module Server exposing (..)
 
-import Html.App exposing (programWithFlags)
+import Platform exposing (programWithFlags)
 import Html exposing (Html)
 import HtmlToString exposing (htmlToString)
 import Task
@@ -22,7 +22,7 @@ init flags =
     let (app,eff) = Arty.init flags in
     let model =
             { app = app, view = Arty.view app } in
-    model ! [ Cmd.map AppMsg eff, Task.perform (always RenderToHtml) (always RenderToHtml) (Task.succeed ()) ]
+    model ! [ Cmd.map AppMsg eff, Task.perform (always RenderToHtml) (Task.succeed ()) ]
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
@@ -44,12 +44,10 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
-main : Program (List Arty.FeedEntry)
 main =
     programWithFlags
         { init = init
         , update = update
-        , view = \m -> Html.App.map AppMsg (view m)
         , subscriptions = subscriptions
         }
 

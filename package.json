@@ -1,8 +1,8 @@
 {
   "name": "day2",
   "dependencies": {
-    "cors": "^2.8.1",
-    "elmx": "^1.0.5",
+    "cors": "^2.8.3",
+    "elmx": "^1.0.8",
     "express": "^4.14.0",
     "feedparser": "^1.1.4",
     "moment": "^2.15.0",

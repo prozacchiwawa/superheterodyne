@@ -3,7 +3,7 @@
 all: js/index.js js/server.js
 
 clean:
-	rm -rf js/index.js js/server.js src/*.elm
+	rm -rf tmp js/index.js js/server.js src/*.elm
 
 %.elm: %.elmx
 	node elmx.js $^ > $@

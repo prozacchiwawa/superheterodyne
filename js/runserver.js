@@ -9,6 +9,8 @@ var request = require('request');
 var moment = require('moment');
 var streamifyString = require('streamify-string');
 
+console.log(elm);
+
 var qfun = function(self,f) {
     var args = [].slice.call(arguments, 2);
     var df = q.defer();
