@@ -1,9 +1,9 @@
 module Main exposing (..)
 
 import Arty
-import Html
 import RouteUrl
 
+main :RouteUrl.RouteUrlProgram (List Arty.FeedEntry) Arty.Model Arty.Action
 main =
     RouteUrl.programWithFlags
         { delta2url = Arty.delta2hash

@@ -44,6 +44,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
+main : Program (List Arty.FeedEntry) Model Msg
 main =
     programWithFlags
         { init = init
