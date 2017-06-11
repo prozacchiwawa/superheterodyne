@@ -121,10 +121,15 @@ a:link {
     overflow: hidden;
 }
 
+.left-margin {
+    margin-left: 0.5rem;
+}
+
 .body h1 {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .body h2 {
@@ -218,21 +223,22 @@ a:link {
     overflow-y: auto;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    box-sizing: border-box;
 }
 
 .code-body {
     position: absolute;
-    left: 100vw; 
-    top: 0; 
+    left: 100vw;
+    top: 0;
     width: 100vw;
     height: 100%;
     overflow-y: auto;
 }
 
 .writing-body {
-    position: absolute; 
-    left: 200vw; 
-    top: 0; 
+    position: absolute;
+    left: 200vw;
+    top: 0;
     width: 100vw;
     height: 100%;
     overflow-y: auto;
