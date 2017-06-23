@@ -118,6 +118,11 @@ view model =
                     <h2 class='code-h2'>Some highlights</h2>
                     <p>I've been recently working in elm, and getting into the groove of more formal functional programming languages.</p>
                     <p>
+                        <div class='github-link'><a href="https://github.com/prozacchiwawa/elm-lightbox"><div class='github'></div><div class='code-title'>elm-lightbox</div></a></div>
+                        <div class='project-date'>June 23, 2017</div>
+                        <span>A lightbox editor in elm that overlays an image on html to make precise alignment easier.  Pretty happy with how it turned out.</span>
+                    </p>
+                    <p>
                         <div class='github-link'><a href='https://github.com/prozacchiwawa/elm-react-native-experiment'><div class='github'></div><div class='code-title'>elm-react-native-experiment</div></a></div>
                         <div class='project-date'>June 19, 2016</div>
                         <span>An experiment with elm-native-ui to port to 0.17 and remove the need for native js in the module.  It turned out well.</span>
