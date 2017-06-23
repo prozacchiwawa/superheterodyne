@@ -125,5 +125,6 @@ app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/img', express.static('img'));
 app.use('/files', express.static('files'));
+app.use('/lightbox', express.static('lightbox'));
 app.use("/GitHub-Mark", express.static('GitHub-Mark'));
 app.listen(PORT);
