@@ -5,20 +5,26 @@
         <link rel='stylesheet' href='css/index.css'></link>
     </head>
     <body>
-        <div id='app'>
-          {{{div}}}
+        <div style='display: none;' id='app'>
+        </div>
+        <div style='display: block;' id='prerender'>
+            {{{div}}}
         </div>
         <script src='js/index.js'></script>
         <script>
         var div = document.getElementById('child');
-        var parent = div.parentNode;
+        var app = document.getElementById('app');
+        var prerender = document.getElementById('prerender');
+        var parent = prerender.parentNode;
         var takeoverFunction = function() {
             parent.removeEventListener('DOMSubtreeModified', takeoverFunction);
-            parent.removeChild(div);
+            setTimeout(function() {
+                app.style = 'display: block;';
+                prerender.style = 'display: none;';
+            }, 0);
         }
         parent.addEventListener('DOMSubtreeModified', takeoverFunction);
-        var children = [].slice(div.childNodes);
-        Elm.Main.embed(parent, {{{feed}}});
+        //Elm.Main.embed(app, {{{feed}}});
         </script>
     </body>
 </html>
